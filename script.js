@@ -1,22 +1,20 @@
 // ---------- Variables ----------
 const restaurantName = "Spooky Bites";
-let isOpen = true;                 // changed from const so the status can be toggled (Enhancement 5)
-
+let isOpen = true;
 let customerName = "";
 let mealPrice = 0;
 let quantity = 1;
 let total = 0;
 
-const DISCOUNT_RATE = 0.10;        // 10% off
-const DISCOUNT_MIN = 300;          // for orders of ₱300 or more
+const DISCOUNT_RATE = 0.1;
+const DISCOUNT_MIN = 300;
 
 const prices = {
   "Spider Pizza": 150,
   "Pumpkin Pasta": 180,
-  "Ghost Burger": 120
+  "Ghost Burger": 120,
 };
 
-// ---------- DOM ----------
 const status = document.getElementById("status");
 const result = document.getElementById("result");
 const orderBtn = document.getElementById("orderBtn");
@@ -26,7 +24,6 @@ function showResult(message, isError = false) {
   result.classList.toggle("error", isError);
 }
 
-// ---------- Restaurant status (Enhancement 5) ----------
 function displayStatus() {
   status.textContent = isOpen ? "We are OPEN!" : "We are CLOSED!";
   orderBtn.disabled = !isOpen;
@@ -38,18 +35,22 @@ function toggleStatus() {
   displayStatus();
 }
 
-// ---------- Personal greeting (Enhancement 1) ----------
 function greetCustomer() {
   const name = document.getElementById("customer").value.trim();
   if (!name) {
     showResult("Please enter your name first!", true);
     return;
   }
-  showResult("👻 Boo-tiful to see you, " + name + "! Welcome to " + restaurantName + ", where every bite is a treat (and a little bit of a trick)! 🎃");
+  showResult(
+    "👻 Boo-tiful to see you, " +
+      name +
+      "! Welcome to " +
+      restaurantName +
+      ", where every bite is a treat (and a little bit of a trick)! 🎃",
+  );
   result.classList.add("greeting");
 }
 
-// ---------- Meal recommendation (Enhancement 3) ----------
 function recommendMeal(amount) {
   if (amount >= 500) {
     return "Our Haunted Feast Platter - perfect for sharing with your fellow ghouls!";
@@ -61,7 +62,6 @@ function recommendMeal(amount) {
   return "Candy Corn Cupcake - a sweet little treat!";
 }
 
-// ---------- Order processing ----------
 function placeOrder() {
   result.classList.remove("greeting");
   customerName = document.getElementById("customer").value.trim();
@@ -84,37 +84,62 @@ function placeOrder() {
   mealPrice = prices[selectedMeal];
   total = mealPrice * quantity;
 
-  // Discount calculator (Enhancement 2)
   let discount = 0;
   if (total >= DISCOUNT_MIN) {
     discount = total * DISCOUNT_RATE;
   }
   const finalTotal = total - discount;
 
-  // Order confirmation (Enhancement 4)
   const confirmed = confirm(
-    "Confirm your order, " + customerName + "?\n\n" +
-    quantity + " x " + selectedMeal + "\n" +
-    "Subtotal: ₱" + total.toFixed(2) + "\n" +
-    "Discount: ₱" + discount.toFixed(2) + "\n" +
-    "Total: ₱" + finalTotal.toFixed(2)
+    "Confirm your order, " +
+      customerName +
+      "?\n\n" +
+      quantity +
+      " x " +
+      selectedMeal +
+      "\n" +
+      "Subtotal: ₱" +
+      total.toFixed(2) +
+      "\n" +
+      "Discount: ₱" +
+      discount.toFixed(2) +
+      "\n" +
+      "Total: ₱" +
+      finalTotal.toFixed(2),
   );
 
   if (!confirmed) {
-    showResult("Order cancelled. Come back when you're ready for a scare, " + customerName + "!", true);
+    showResult(
+      "Order cancelled. Come back when you're ready for a scare, " +
+        customerName +
+        "!",
+      true,
+    );
     return;
   }
 
   let summary =
-    "Thank you, " + customerName + "! Your order: " + quantity + " " + selectedMeal + "(s). " +
-    "Subtotal: ₱" + total.toFixed(2) + ". ";
+    "Thank you, " +
+    customerName +
+    "! Your order: " +
+    quantity +
+    " " +
+    selectedMeal +
+    "(s). " +
+    "Subtotal: ₱" +
+    total.toFixed(2) +
+    ". ";
   if (discount > 0) {
     summary += "10% discount applied: -₱" + discount.toFixed(2) + ". ";
   } else {
     summary += "Order ₱" + DISCOUNT_MIN + " or more to get a 10% discount. ";
   }
-  summary += "Total: ₱" + finalTotal.toFixed(2) + ". Enjoy your spooky meal! " +
-    "Special recommendation: " + recommendMeal(finalTotal);
+  summary +=
+    "Total: ₱" +
+    finalTotal.toFixed(2) +
+    ". Enjoy your spooky meal! " +
+    "Special recommendation: " +
+    recommendMeal(finalTotal);
   showResult(summary);
 }
 
@@ -122,9 +147,10 @@ function showMenuMessage() {
   alert("Welcome to " + restaurantName + "! Choose your spooky meal.");
 }
 
-// ---------- Run & listeners ----------
 displayStatus();
 orderBtn.addEventListener("click", placeOrder);
 document.getElementById("greetBtn").addEventListener("click", greetCustomer);
 document.getElementById("toggleBtn").addEventListener("click", toggleStatus);
-document.querySelector('a[href="#menu"]').addEventListener("click", showMenuMessage);
+document
+  .querySelector('a[href="#menu"]')
+  .addEventListener("click", showMenuMessage);
