@@ -1,4 +1,3 @@
-// ---------- Variables ----------
 const restaurantName = "Spooky Bites";
 let isOpen = true;
 let customerName = "";
